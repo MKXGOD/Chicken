@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BaseEnemy : MonoBehaviour, IDamagebleEnemy
+public abstract class BaseEnemy : MonoBehaviour, IDamageble
 {
 
     public IAddLevel IAddLevel;
@@ -8,7 +8,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagebleEnemy
     private GameObject _chiken;
 
     public int MaxHP;
-    public int CurrentHP;
+    public float CurrentHP;
     public int Exp;
     public int Level;
 
@@ -19,13 +19,13 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagebleEnemy
         LevelChicken level = _chiken.GetComponent<LevelChicken>();
         IAddLevel = level.GetComponent<IAddLevel>();
     }
-    public void Damage(int damage, GameObject Enemy)
+    public void Damage(float damage)
     {
         CurrentHP -= damage;
 
         if (CurrentHP <= 0)
         {
-            Destroy(Enemy);
+            Destroy(this);
             IAddLevel.AddLevelPoint(Exp);
             EffectController.Instance.SetClickEffect(Exp);
         }

@@ -1,56 +1,65 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Chicken : MonoBehaviour
+public class Chicken : MonoBehaviour, IDamageble
 {
-    public HealthBar HealthBar; 
+    private CharacterController _characterController;
+    private Animator _animator;
 
-    private List<ChickenStats> _chickenStats;
-    [SerializeField]private List<UpgradeStats> _upgradeStats;
+    private ChickenAnimation _chikenAnimation;
+    private ChickenAttack _chikenAttack;
+    private ChickenMovement _chikenMovement;
+    private ChickenHealth _chikenHealth;
+
+    [SerializeField] private HealthBar _healthBar;
+
+    [SerializeField] private Joystick _joystickMove;
+    [SerializeField] private Button _buttonAttack;
+
+    [SerializeField] private AudioSource _chikenStep;
+
+
+    private List<ChickenStats> _chikenStats;
+    [SerializeField] private List<UpgradeStats> _upgradeStats;
     
-    [Header ("Chicken Stats")]
-    private int _healthMax;
-    private int _healthCurrent;
-    private int _damage;
-    private int _speed;
-
-    public void Start()
+    private void Awake()
     {
-        _chickenStats = new List<ChickenStats>()
+        _characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
+
+        _chikenStats = new List<ChickenStats>()
         {
-            new ChickenStats(ChickenStats.Stats.Power, "PowerAttack", 0, 5, 1),
-            new ChickenStats(ChickenStats.Stats.Speed, "SpeedRun", 0, 1, 1),
-            new ChickenStats(ChickenStats.Stats.HealthPoint, "Health", 0, 10, 1),
+            new ChickenStats(ChickenStats.Stats.Power, "PowerAttack", 1, 5, 1),
+            new ChickenStats(ChickenStats.Stats.Speed, "SpeedRun", 1, 1, 1),
+            new ChickenStats(ChickenStats.Stats.HealthPoint, "Health", 10, 3, 1),
         };
         for (int i = 0; i < _upgradeStats.Count; i++)
-            _upgradeStats[i].SetData(_chickenStats[i]);
+            _upgradeStats[i].SetData(_chikenStats[i]);
 
-        _healthMax = 100;
-        _healthCurrent = _healthMax;
-        HealthBar.HpBarMaxValue(_healthMax);
+        _chikenAnimation = new ChickenAnimation(_animator);
+        _chikenAttack = new ChickenAttack(_chikenAnimation, _chikenStats[1], _buttonAttack);
+        _chikenMovement = new ChickenMovement(_chikenStep, _joystickMove, _chikenStats[1]);
+        _chikenHealth = new ChickenHealth(_chikenStats[2], _healthBar);
+    }
+    private void Update()
+    {
+        Move();
+    }
+    private void Move()
+    {
+        _characterController.Move(_chikenMovement.MoveVector() * Time.deltaTime);
+        _chikenAnimation.RunAnimation(_chikenMovement.MoveVector());
 
+        //Rotate chiken
+        if (Vector3.Angle(Vector3.forward, _chikenMovement.MoveVector()) > 1f || Vector3.Angle(Vector3.forward, _chikenMovement.MoveVector()) == 0)
+        {
+            Vector3 direct = Vector3.RotateTowards(transform.forward, _chikenMovement.MoveVector(), _chikenMovement.MovementSpeed(), 0.0f);
+            transform.rotation = Quaternion.LookRotation(direct);
+        }
     }
-
-    public int Damage()
+    public void Damage(float damage)
     {
-        _damage = 10;
-        _damage = _chickenStats[0].CalculatedDamage(_damage);
-        return _damage;
-    }
-    public float Speed()
-    {
-        _speed = 1;
-        _speed = _chickenStats[1].CalculatedMoveSpeed(_speed);
-        return _speed;
-    }
-    public int HealthPoint()
-    {
-        _healthMax = _chickenStats[2].CalculatedHealthPoint(_healthMax);
-        return _healthMax;
-    }
-    public void TakeDamage(int Damage)
-    {
-        _healthCurrent -= Damage;
-        HealthBar.HpBarCurrentValue(_healthCurrent);
+       _chikenHealth.Damage(damage);
     }
 }

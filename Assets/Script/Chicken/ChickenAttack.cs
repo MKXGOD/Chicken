@@ -1,39 +1,37 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class ChickenAttack : MonoBehaviour
+public class ChickenAttack
 {
-    public ChickenAnimation Animation;
-    public Chicken Chicken;
+    private ChickenAnimation _animations;
+    private ChickenStats _powerStats;
+    private Button _buttonAttack;
 
-    public AudioSource Punch;
-
-    private IDamagebleEnemy _iDamagebleEnemy;
-
+    private float _attackDamage;
     private float _attackRate = 3;
     private float _nextAttack;
 
-    public void OnTriggerEnter (Collider other)
+    public ChickenAttack(ChickenAnimation animations, ChickenStats powerStats, Button buttonAttack)
     {
-        Attack();
+        _animations = animations;
+        _powerStats = powerStats;
+        _buttonAttack = buttonAttack;
 
-        var target = other.gameObject;
-        _iDamagebleEnemy = target.GetComponent<IDamagebleEnemy>();
+        _buttonAttack.onClick.AddListener(ClickButton);
+    }
+    public float AttackDamage()
+    {
+        _attackDamage = _powerStats.Value;
 
-        if(_iDamagebleEnemy != null && target != null)
-           _iDamagebleEnemy.Damage(Chicken.Damage(), target);
+        return _attackDamage;
     }
     public void ClickButton()
     {
         if (Time.time > _nextAttack)
         {
             _nextAttack = Time.time + _attackRate;
-            Attack();
+            _animations.AttackAnimation();
         }
-        else Animation.TurnHead();
-    }
-    public void Attack()
-    {
-        Animation.AttackAnimation();
-        Punch.Play();
+        else _animations.TurnHeadAnimation();
     }
 }
