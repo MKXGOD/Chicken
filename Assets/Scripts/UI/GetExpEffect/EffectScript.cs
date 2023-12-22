@@ -6,7 +6,7 @@ public class EffectScript : MonoBehaviour
     public Text Text;
     [SerializeField] private CanvasGroup _group;
 
-    void Update()
+    private void Update()
     {
         _group.alpha = Mathf.Lerp(_group.alpha, 0, Time.deltaTime * 2);
         transform.position += Vector3.up * Time.deltaTime * 60;
