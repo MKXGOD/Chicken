@@ -22,7 +22,9 @@ public class Chicken : MonoBehaviour, IDamageble
 
     private List<ChickenStats> _chikenStats;
     [SerializeField] private List<UpgradeStats> _upgradeStats;
-    
+
+    public event IDamageble.DeathHandler OnDeath;
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
