@@ -1,29 +1,41 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class ChickenAttack
+public class ChickenAttack:MonoBehaviour
 {
-    private ChickenAnimation _animations;
-    private ChickenStats _powerStats;
-    private Button _buttonAttack;
+    [SerializeField] private AudioSource _audioPunch;
+    [SerializeField] private Button _buttonAttack;
 
-    private float _attackDamage;
+    private LevelSystem _levelSystem;
+    private ChickenStats _chickenPower;
+    private ChickenAnimation _animations;
+
+    private float _basePower = 1;
     private float _attackRate = 3;
     private float _nextAttack;
 
-    public ChickenAttack(ChickenAnimation animations, ChickenStats powerStats, Button buttonAttack)
-    {
+    public void InitAttackSystem(LevelSystem levelSystem, ChickenStats chikenPower, ChickenAnimation animations)
+    { 
+        _levelSystem = levelSystem;
+        _chickenPower = chikenPower;
         _animations = animations;
-        _powerStats = powerStats;
-        _buttonAttack = buttonAttack;
-
+    }
+    private void Start()
+    {
         _buttonAttack.onClick.AddListener(ClickButton);
     }
-    public float AttackDamage()
+    private void OnTriggerEnter (Collider other)
     {
-        _attackDamage = _powerStats.Value;
-
-        return _attackDamage;
+        if (other.gameObject.TryGetComponent(out IDamageble iDamageble))
+        {
+            iDamageble.OnDeath += OnEnemyDeath;
+            _audioPunch.Play();
+            iDamageble.Damage(_chickenPower.CalculatedDamage(_basePower));   
+        }
+    }
+    private void OnEnemyDeath(int exp)
+    {
+        _levelSystem.AddExperience(exp);
     }
     public void ClickButton()
     {

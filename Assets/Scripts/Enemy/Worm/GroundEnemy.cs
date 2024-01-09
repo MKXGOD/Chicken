@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,6 +6,7 @@ public class GroundEnemy : MonoBehaviour, IDamageble
 {
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private TextMeshProUGUI _levelText;
 
     private NavMeshAgent _agent;
 
@@ -29,6 +31,8 @@ public class GroundEnemy : MonoBehaviour, IDamageble
     private void Start()
     {
         _healthBar.HpBarMaxValue(_maxHp);
+        _currentHp = _maxHp;
+        _levelText.text = "Level: " + _level.ToString();
     }
     private void Update()
     {

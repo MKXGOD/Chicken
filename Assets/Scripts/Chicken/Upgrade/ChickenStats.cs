@@ -10,25 +10,23 @@ public class ChickenStats
     }
     public Stats Type { get; private set; }
 
-    public int Value => InitValue + (int)IncreasePerLevel * Mathf.Clamp(Level, 0, int.MaxValue);
+    public float Value => InitValue + IncreasePerLevel * Mathf.Clamp(Level, 0, int.MaxValue);
     public float IncreasePerLevel { get; private set; }
-    public int InitValue { get; private set; }
-    public int Price { get; private set; }
+    public float InitValue { get; private set; }
 
     public int Level { get; private set; }
 
     public string NameStats { get; private set; }
 
-    public ChickenStats(Stats type, string nameStats, int value, float increasePerLevel,int price)
+    public ChickenStats(Stats type, string nameStats, float value, float increasePerLevel)
     {
         Type = type;
         IncreasePerLevel = increasePerLevel;
         InitValue = value;
-        Price = price;
         NameStats = nameStats;
     }
 
-    public int CalculatedDamage(int Damage)
+    public float CalculatedDamage(float Damage)
     {
         switch (Type)
         { 
@@ -38,17 +36,7 @@ public class ChickenStats
                 return Damage;
         }
     }
-    public int CalculatedMoveSpeed(int Speed)
-    {
-        switch (Type)
-        {
-            case Stats.Speed:
-                return Speed + Value;
-            default:
-                return Speed;
-        }
-    }
-    public int CalculatedHealthPoint(int Health)
+    public float CalculatedHealthPoint(float Health)
     {
         switch (Type)
         {
