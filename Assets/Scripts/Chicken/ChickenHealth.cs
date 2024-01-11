@@ -6,6 +6,7 @@
 
     private float _maxHealth;
     private float _health;
+    private float _baseHealth = 5;
 
     public float Health => _health;
 
@@ -26,7 +27,7 @@
 
     public void UpgradeMaxHealth()
     {
-        _maxHealth = _healthStats.Value;
+        _maxHealth = _healthStats.CalculatedHealthPoint(_baseHealth);
         _healthBar.HpBarMaxValue(_maxHealth);
     }
 

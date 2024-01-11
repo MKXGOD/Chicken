@@ -8,8 +8,7 @@ public class ChickenMovement
     private ChickenStats _speedStats;
 
     private Vector3 _moveVector;
-    private float _speed;
-
+    public float Speed => _speedStats.Value;
 
     public ChickenMovement(AudioSource chikenStep, Joystick joystick, ChickenStats speedStats)
     {
@@ -17,16 +16,9 @@ public class ChickenMovement
         _joystick = joystick;
         _speedStats = speedStats;
     }
-    public float MovementSpeed()
-    {
-        _speed = _speedStats.Value;
-        return _speed;
-    }
-
     public Vector3 MoveVector()
     {
-        _moveVector = new Vector3(_joystick.Horizontal * MovementSpeed(), 0, _joystick.Vertical * MovementSpeed());
-
+        _moveVector = new Vector3(_joystick.Horizontal * Speed, 0, _joystick.Vertical * Speed);
         if (_moveVector.x != 0 || _moveVector.z != 0)
             _chikenStep.enabled = true;
         else _chikenStep.enabled = false;

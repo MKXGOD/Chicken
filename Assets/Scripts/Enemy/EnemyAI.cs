@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-
 public class EnemyAI
 {
     private NavMeshAgent _agent;
@@ -28,6 +27,7 @@ public class EnemyAI
 
     public void View(Transform viewer)
     {
+        
         _withinEnemyColliders = Physics.OverlapSphere(viewer.position, _viewRadius, _playerLayer);
 
         if (_withinEnemyColliders.Length > 0)
@@ -37,19 +37,29 @@ public class EnemyAI
 
             if (_type == Type._isPeaceful)
                 RunAway(viewer, player);
-            else Attack();
+            else Attack(viewer, player);
         }
         else _agent.enabled = false;
     }
 
-    private void Attack()
+    private void Attack(Transform viewer, Transform player)
     {
-        throw new NotImplementedException();
+        _agent.SetDestination(player.position);
+        if (_agent.velocity != Vector3.zero)
+        {
+            Quaternion rotation = Quaternion.LookRotation(-_agent.velocity, Vector3.up);
+            viewer.rotation = Quaternion.Lerp(viewer.rotation, rotation, Time.deltaTime * _agent.angularSpeed * 1.5f);
+        }
     }
 
-    private void RunAway(Transform viewerTransform, Transform playerTransform)
+    private void RunAway(Transform viewer, Transform player)
     {
-        Vector3 destination = (viewerTransform.position - playerTransform.position) + viewerTransform.position;
+        Vector3 destination = (viewer.position - player.position) + viewer.position;
+        if (_agent.velocity != Vector3.zero)
+        {
+            Quaternion rotation = Quaternion.LookRotation(-_agent.velocity, Vector3.up);
+            viewer.rotation = Quaternion.Lerp(viewer.rotation, rotation, Time.deltaTime * _agent.angularSpeed);
+        }
         _agent.SetDestination(destination);
     }
 }

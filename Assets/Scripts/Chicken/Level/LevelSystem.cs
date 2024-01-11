@@ -4,8 +4,8 @@ public class LevelSystem
     public event ExperienceHandler OnExperienceChanged;
     public event ExperienceHandler OnLevelChanged;
 
-    private int _experience;
-    private int _experienceToNextLevel;
+    private float _experience;
+    private float _experienceToNextLevel;
     private int _level;
 
     public LevelSystem() 
@@ -18,10 +18,10 @@ public class LevelSystem
     public void AddExperience(int amount)
     { 
         _experience += amount;
-        if (_experience >= _experienceToNextLevel)
+        while (_experience >= _experienceToNextLevel)
         {
-            _level++;
             _experience -= _experienceToNextLevel;
+            _level++;
             OnLevelChanged?.Invoke();
         }
         OnExperienceChanged?.Invoke();
@@ -33,7 +33,7 @@ public class LevelSystem
     }
     public float GetExperienceNormalized()
     { 
-        return (float)_experience / _experienceToNextLevel;
+        return _experience / _experienceToNextLevel;
     }
 
 }
