@@ -5,38 +5,42 @@ public class Chicken : MonoBehaviour, IDamageble
 {
     private CharacterController _characterController;
     private Animator _animator;
-
+    private LevelSystem _levelSystem;
+    private HitMarker _hitMarker;
+    #region "Chicken class"
     private ChickenAnimation _chickenAnimation;
     private ChickenMovement _chickenMovement;
     private ChickenHealth _chickenHealth;
     
+    [Header("Chicken class")]
     [SerializeField] private ChickenAttack _chickenAttack;
-
-    private LevelSystem _levelSystem;
+    #endregion
+    #region"UI"
+    [Header("UI components")]
     [SerializeField] private LevelWindow _levelWindow;
-
     [SerializeField] private HealthBar _healthBar;
-
     [SerializeField] private Joystick _joystickMove;
-
+    #endregion
+    [Header("Audio")]
     [SerializeField] private AudioSource _chickenStep;
 
-
     private List<ChickenStats> _chickenStats;
+    [Header("Stats")]
     [SerializeField] private List<UpgradeStats> _upgradeStats;
+
 
     public event IDamageble.DeathHandler OnDeath;
 
     private void Awake()
     {
-
+        _hitMarker = GetComponent<HitMarker>();
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
 
         _chickenStats = new List<ChickenStats>()
         {
             new ChickenStats(ChickenStats.Stats.Power, "PowerAttack", 1, 2),
-            new ChickenStats(ChickenStats.Stats.Speed, "SpeedRun", 0.5f, Mathf.Clamp(0.2f, 0, 2)),
+            new ChickenStats(ChickenStats.Stats.Speed, "SpeedRun", 0.6f, Mathf.Clamp(0.2f, 0, 2)),
             new ChickenStats(ChickenStats.Stats.HealthPoint, "Health", 5, Mathf.Clamp(2f, 0, 20)),
         };
         UpdateUIData();
@@ -80,6 +84,7 @@ public class Chicken : MonoBehaviour, IDamageble
     public void Damage(float damage)
     {
        _chickenHealth.Damage(damage);
+        _hitMarker.HitMark();
     }
     private void LevelUpStats()
     {
