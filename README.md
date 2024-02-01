@@ -1,6 +1,6 @@
 <h1>Курица поедает червяков и жуков</h1>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/mPDz9NJBUdM?si=IJB9EtbvF2emWzff" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+https://www.youtube.com/embed/mPDz9NJBUdM?si=IJB9EtbvF2emWzff
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=mPDz9NJBUdM?si=IJB9EtbvF2emWzff" target="_blank"><img src="http://img.youtube.com/vi/mPDz9NJBUdM?si=IJB9EtbvF2emWzff/0.jpg" width="240" height="180" border="10"/></a>
 
 <h2>Что реализовано?</h2>
 <ul>
@@ -10,7 +10,10 @@
   <li>Характеристики(скорость бега, сила атаки, колчиество макс. здоровья)</li>
   <li>Система спавна живности</li>
   <li>Примитивный AI червей и жуков
-    <li>Черви бегут от курица</li>
+    <ul>
+      <li>Черви бегут от курицы</li>
+      <li>Жуки способны атаковать курицу и агрессируют на нее сами</li>
+    </ul>
   </li>
   <ul></ul
 </ul>
