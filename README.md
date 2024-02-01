@@ -1,6 +1,7 @@
 <h1>Курица поедает червяков и жуков</h1>
-https://www.youtube.com/embed/mPDz9NJBUdM?si=IJB9EtbvF2emWzff
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=mPDz9NJBUdM?si=IJB9EtbvF2emWzff" target="_blank"><img src="http://img.youtube.com/vi/mPDz9NJBUdM?si=IJB9EtbvF2emWzff/0.jpg" width="240" height="180" border="10"/></a>
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=mPDz9NJBUdM" target="_blank"><img src="http://img.youtube.com/vi/mPDz9NJBUdM/0.jpg" 
+alt="ALT-ТЕКСТ ИЗОБРАЖЕНИЯ" width="240" height="180" border="10" /></a>
 
 <h2>Что реализовано?</h2>
 <ul>
